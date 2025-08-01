@@ -1,0 +1,138 @@
+
+
+.admin-container {
+  display: flex;
+  font-family: sans-serif;
+  background-color: #f9fbf9;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background-color: #ffffff;
+  padding: 2rem 1.5rem;
+  border-right: 1px solid #e0e0e0;
+}
+
+.sidebar .logo {
+  font-weight: bold;
+  color: #1e3b2f;
+  margin-bottom: 2rem;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav li {
+  padding: 0.75rem 0;
+  color: #333;
+  cursor: pointer;
+}
+
+.sidebar nav .active {
+  font-weight: bold;
+  background-color: #f0f5f0;
+  border-radius: 8px;
+  padding-left: 10px;
+}
+
+.sidebar .help {
+  margin-top: 4rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.admin-main {
+  flex: 1;
+  padding: 2rem 3rem;
+}
+
+.admin-main h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtext {
+  color: #6b8f75;
+  margin-bottom: 1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  color: #6b8f75;
+}
+
+.active-tab {
+  border-color: #6b8f75;
+  font-weight: bold;
+}
+
+.search-bar {
+  background-color: #eef3ef;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.search-bar input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  outline: none;
+}
+
+.posts-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.95rem;
+}
+
+.posts-table th,
+.posts-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.posts-table .category {
+  color: #6b8f75;
+}
+
+.posts-table .status {
+  background-color: #eef3ef;
+  padding: 0.3rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.status.pending {
+  background-color: #f5f5f5;
+}
+
+.status.verified {
+  background-color: #e1f5e1;
+}
+
+.status.matched {
+  background-color: #e9f0fa;
+}
+
+.view-link {
+  color: #4aaf8a;
+  cursor: pointer;
+}

@@ -1,0 +1,369 @@
+/* === RESET === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body, html {
+  font-family: 'Poppins', sans-serif;
+  background: #f9fff9;
+  color: #1a1a1a;
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding-top: 70px;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* === NAVBAR === */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,128,0,0.15);
+  z-index: 1000;
+  padding: 12px 24px;
+}
+.navbar-content {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.logo {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #00c853;
+  white-space: nowrap;
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.nav-links a {
+  font-size: 1rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.nav-links a:hover {
+  color: #00b050;
+}
+.nav-buttons {
+  display: flex;
+  gap: 10px;
+}
+.signin-btn, .signup-btn {
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.signin-btn {
+  background: #00b050;
+  color: #fff;
+}
+.signin-btn:hover {
+  background: #029b48;
+}
+.signup-btn {
+  background: #333;
+  color: #fff;
+}
+.signup-btn:hover {
+  background: #000;
+}
+
+/* === HAMBURGER === */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+.bar {
+  width: 25px;
+  height: 3px;
+  background: #000;
+  transition: 0.3s;
+}
+
+/* === HERO === */
+.hero {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.hero-overlay h1 {
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 20px;
+  max-width: 750px;
+}
+.hero-overlay p {
+  font-size: 1.125rem;
+  color: #f1f1f1;
+  max-width: 620px;
+  margin-bottom: 30px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 14px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.btn.green {
+  background: #00c853;
+  color: #fff;
+}
+.btn.green:hover {
+  background: #00b347;
+}
+
+/* === RECENT LISTINGS === */
+.recent {
+  padding: 70px 64px;
+}
+.recent h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 40px;
+  color: #00c853;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0,128,0,0.08);
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+.card:hover {
+  transform: translateY(-8px);
+}
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 12px;
+}
+.card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0 12px 16px;
+}
+.center-button {
+  text-align: center;
+  margin-top: 40px;
+}
+.view-btn {
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 25px;
+  background: #00c853;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.view-btn:hover {
+  background: #00b347;
+}
+
+/* === ABOUT & CONTACT === */
+.about, .contact {
+  padding: 70px 64px;
+  background: #fff;
+  border-top: 1px solid #e0f2e9;
+}
+.about h2, .contact h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #00c853;
+}
+.about p, .contact p {
+  font-size: 1.05rem;
+  color: #444;
+  max-width: 800px;
+  line-height: 1.7;
+}
+
+/* === CONTACT FORM === */
+.contact-form {
+  margin-top: 24px;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.contact-form input,
+.contact-form textarea {
+  padding: 14px 18px;
+  font-size: 1rem;
+  border: 1px solid #b2dfdb;
+  border-radius: 10px;
+  background: #e9fbe8;
+  transition: border 0.3s;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #00c853;
+  outline: none;
+}
+.contact-form button {
+  align-self: flex-start;
+}
+
+/* === MEDIA QUERIES === */
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 12px 32px;
+  }
+  .recent, .about, .contact {
+    padding: 60px 32px;
+  }
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    gap: 16px;
+    padding: 20px 0;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    z-index: 999;
+  }
+  .nav-links.active {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-buttons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .signin-btn, .signup-btn,
+  .btn, .view-btn {
+    width: 100%;
+    max-width: 260px;
+  }
+  .hero-overlay h1 {
+    font-size: 2rem;
+  }
+  .hero-overlay p {
+    font-size: 1rem;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  .hero-overlay h1 {
+    font-size: 1.6rem;
+  }
+  .hero-overlay p {
+    font-size: 0.95rem;
+  }
+}
+.listing-with-actions {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.action-buttons {
+  margin-top: 0.5rem;
+}
+
+.edit-btn,
+.delete-btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn:hover {
+  background-color: #a71d2a;
+}
