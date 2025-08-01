@@ -1,4 +1,4 @@
-/* Base Container */
+
 .report-form-container {
   max-width: 700px;
   margin: 40px auto;
@@ -10,14 +10,14 @@
   color: #111;
 }
 
-/* Header */
+
 .report-form-container h2 {
   font-size: 24px;
   margin-bottom: 30px;
   color: #111;
 }
 
-/* Form Fields */
+
 .report-form label {
   font-weight: 600;
   margin: 10px 0 6px;
@@ -43,7 +43,7 @@
   min-height: 80px;
 }
 
-/* Map Preview */
+
 .map-preview {
   border-radius: 14px;
   overflow: hidden;
@@ -56,7 +56,7 @@
   display: block;
 }
 
-/* Toggle Switch */
+
 .toggle-section {
   margin: 20px 0;
   display: flex;
@@ -72,7 +72,7 @@
   flex: 1 1 300px;
 }
 
-/* Toggle switch styling */
+
 .switch {
   position: relative;
   display: inline-block;
@@ -118,7 +118,7 @@ input:checked + .slider:before {
   transform: translateX(22px);
 }
 
-/* Submit Button */
+
 .submit-btn {
   background-color: #00d142;
   color: #fff;

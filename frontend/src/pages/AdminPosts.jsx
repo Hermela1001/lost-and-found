@@ -1,21 +1,48 @@
-// src/pages/AdminPosts.jsx
-import React, { useState } from 'react';
-import '../AdminPosts.css'; // ✅ updated path
-
-const posts = [
-  { title: 'Lost: Wallet', category: 'Personal Items', status: 'Pending' },
-  { title: 'Found: Keys', category: 'Personal Items', status: 'Verified' },
-  { title: 'Lost: Backpack', category: 'Personal Items', status: 'Matched' },
-  { title: 'Found: Phone', category: 'Electronics', status: 'Pending' },
-  { title: 'Lost: Laptop', category: 'Electronics', status: 'Verified' },
-];
+import React, { useEffect, useState } from 'react';
+import '../AdminPosts.css';
 
 const AdminPosts = () => {
+  const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState('All');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const token = localStorage.getItem('token');
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch('http://localhost:3000/items', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        throw new Error('Failed to fetch items');
+      }
+
+      const data = await res.json();
+      setPosts(data);
+    } catch (err) {
+      console.error('Fetch error:', err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const filteredPosts = posts.filter((post) => {
-    if (filter === 'All') return true;
-    return post.title.toLowerCase().startsWith(filter.toLowerCase());
+    if (filter !== 'All' && post.status.toLowerCase() !== filter.toLowerCase()) return false;
+    if (searchTerm && !post.title.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    return true;
   });
 
   return (
@@ -31,7 +58,6 @@ const AdminPosts = () => {
             <li>Settings</li>
           </ul>
         </nav>
-        <div className="help">❓ Help and feedback</div>
       </aside>
 
       <main className="admin-main">
@@ -51,29 +77,59 @@ const AdminPosts = () => {
         </div>
 
         <div className="search-bar">
-          <input type="text" placeholder="🔍 Search posts" />
+          <input
+            type="text"
+            placeholder="🔍 Search posts"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
 
-        <table className="posts-table">
-          <thead>
-            <tr>
-              <th>Post</th>
-              <th>Category</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPosts.map((post, index) => (
-              <tr key={index}>
-                <td>{post.title}</td>
-                <td className="category">{post.category}</td>
-                <td><span className={`status ${post.status.toLowerCase()}`}>{post.status}</span></td>
-                <td className="view-link">View</td>
+        {loading ? (
+          <p>Loading posts...</p>
+        ) : error ? (
+          <p style={{ color: 'red' }}>Error: {error}</p>
+        ) : (
+          <table className="posts-table">
+            <thead>
+              <tr>
+                <th>Post</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredPosts.length === 0 ? (
+                <tr>
+                  <td colSpan="4" style={{ textAlign: 'center' }}>
+                    No posts found.
+                  </td>
+                </tr>
+              ) : (
+                filteredPosts.map((post) => (
+                  <tr key={post.id}>
+                    <td>{post.title}</td>
+                    <td className="category">{post.category}</td>
+                    <td>
+                      <span className={`status ${post.status.toLowerCase()}`}>
+                        {post.status}
+                      </span>
+                    </td>
+                    <td className="view-link">
+                      {/* Optional admin action buttons */}
+                      <button
+                        onClick={() => alert(JSON.stringify(post, null, 2))}
+                      >
+                        View
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        )}
       </main>
     </div>
   );

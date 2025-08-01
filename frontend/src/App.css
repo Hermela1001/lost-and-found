@@ -335,3 +335,35 @@ a {
     font-size: 0.95rem;
   }
 }
+.listing-with-actions {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.action-buttons {
+  margin-top: 0.5rem;
+}
+
+.edit-btn,
+.delete-btn {
+  background-color: #007bff;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn:hover {
+  background-color: #a71d2a;
+}

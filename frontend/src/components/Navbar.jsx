@@ -11,14 +11,14 @@ const Navbar = () => {
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
 
-  // ✅ check auth every route change
   useEffect(() => {
-    const auth = localStorage.getItem("auth");
-    setIsLoggedIn(auth === "true");
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
   }, [location]);
 
   const handleLogout = () => {
-    localStorage.removeItem("auth");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setIsLoggedIn(false);
     closeMenu();
     navigate("/login");
