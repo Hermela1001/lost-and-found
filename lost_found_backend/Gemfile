@@ -15,7 +15,8 @@ gem 'rack-cors'         # For handling CORS
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 group :development, :test do
-  gem 'rspec-rails', '~> 5.0'          # Core RSpec testing framework for Rails
+  gem 'rspec-rails', github: 'rspec/rspec-rails'
+          # Core RSpec testing framework for Rails
   gem 'factory_bot_rails'               # FactoryBot to easily create test data
   gem 'faker'                          # Faker to generate fake data for tests
 end
