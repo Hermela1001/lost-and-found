@@ -7,7 +7,7 @@ class User < ApplicationRecord
   validates :name, :role, presence: true
   validates :role, inclusion: { in: %w[admin student] }
 
-  # Helper methods for role checks
+  
   def admin?
     role == 'admin'
   end
@@ -15,4 +15,4 @@ class User < ApplicationRecord
   def student?
     role == 'student'
   end
-end
+endk

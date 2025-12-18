@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../AdminPosts.css';
 
 const AdminPosts = () => {
@@ -9,6 +10,7 @@ const AdminPosts = () => {
   const [error, setError] = useState(null);
 
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
 
   const fetchPosts = async () => {
     setLoading(true);
@@ -117,10 +119,7 @@ const AdminPosts = () => {
                       </span>
                     </td>
                     <td className="view-link">
-                      {/* Optional admin action buttons */}
-                      <button
-                        onClick={() => alert(JSON.stringify(post, null, 2))}
-                      >
+                      <button onClick={() => navigate(`/items/${post.id}`)}>
                         View
                       </button>
                     </td>

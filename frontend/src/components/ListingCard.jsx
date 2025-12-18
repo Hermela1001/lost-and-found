@@ -1,10 +1,10 @@
-// src/components/ListingCard.jsx
+
 import React from 'react';
-import { Link } from 'react-router-dom'; // ✅ Import Link
+import { Link } from 'react-router-dom'; 
 import '../App.css';
 
 const ListingCard = ({ image, title, description }) => {
-  const encodedTitle = encodeURIComponent(title); // Optional: safer URL
+  const encodedTitle = encodeURIComponent(title); 
 
   return (
     <Link to={`/item/${encodedTitle}`} className="card-link">

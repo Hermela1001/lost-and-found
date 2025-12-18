@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import "./ItemDetails.css"; 
 
-const ItemDetails = ({ currentUserId, onBack }) => {
+const ItemDetails = ({ currentUserId }) => {
   const { id } = useParams();
+  const navigate = useNavigate();
+
   const [item, setItem] = useState(null);
   const [form, setForm] = useState({
     title: "",
@@ -12,14 +15,15 @@ const ItemDetails = ({ currentUserId, onBack }) => {
     date_found: "",
     category: "",
     image: null,
+    share_contact: false,
   });
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
+  const [deleteMsg, setDeleteMsg] = useState(null);
 
   useEffect(() => {
-    console.log("Fetching item with ID:", id);
-
     if (!id) {
       setError("Invalid item ID.");
       setLoading(false);
@@ -32,7 +36,6 @@ const ItemDetails = ({ currentUserId, onBack }) => {
         return res.json();
       })
       .then((data) => {
-        console.log("Fetched item:", data);
         setItem(data);
         setForm({
           title: data.title || "",
@@ -42,20 +45,22 @@ const ItemDetails = ({ currentUserId, onBack }) => {
           date_found: data.date_found?.split("T")[0] || "",
           category: data.category || "",
           image: null,
+          share_contact: data.share_contact || false,
         });
         setLoading(false);
       })
       .catch((e) => {
-        console.error("Error fetching item:", e);
         setError(e.message);
         setLoading(false);
       });
   }, [id]);
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    const { name, value, files, type, checked } = e.target;
     if (name === "image") {
       setForm((prev) => ({ ...prev, image: files[0] }));
+    } else if (type === "checkbox") {
+      setForm((prev) => ({ ...prev, [name]: checked }));
     } else {
       setForm((prev) => ({ ...prev, [name]: value }));
     }
@@ -76,7 +81,7 @@ const ItemDetails = ({ currentUserId, onBack }) => {
     fetch(`http://localhost:3000/items/${id}`, {
       method: "PATCH",
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: formData,
     })
@@ -102,13 +107,15 @@ const ItemDetails = ({ currentUserId, onBack }) => {
     fetch(`http://localhost:3000/items/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: localStorage.getItem("token"),
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => {
         if (res.ok) {
-          alert("Item deleted.");
-          onBack?.();
+          setDeleteMsg("🗑️ Item deleted successfully.");
+          setTimeout(() => {
+            navigate("/admin-posts");
+          }, 1500);
         } else {
           throw new Error("Failed to delete item");
         }
@@ -117,124 +124,124 @@ const ItemDetails = ({ currentUserId, onBack }) => {
   };
 
   if (loading) return <p>Loading item details...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+  if (error) return <p className="error-message">Error: {error}</p>;
   if (!item) return <p>Item not found.</p>;
 
   const isOwner = item.user_id === currentUserId;
 
   return (
-    <div style={{ maxWidth: "600px", margin: "auto", padding: "1rem" }}>
-      <button onClick={onBack} style={{ marginBottom: "1rem" }}>
+    <div className="report-form-container">
+      <button onClick={() => navigate("/admin-posts")} className="back-button">
         ← Back
       </button>
+      <h2>Edit / View Item</h2>
 
-      <h2>Item Details</h2>
+      {successMsg && <p className="success-message">{successMsg}</p>}
+      {deleteMsg && <p className="success-message">{deleteMsg}</p>}
+      {error && <p className="error-message">{error}</p>}
 
-      <form onSubmit={handleUpdate}>
-        <label>
-          Title:
-          <input
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            required
-            style={{ width: "100%" }}
-          />
-        </label>
-        <br />
+      <form onSubmit={handleUpdate} className="report-form">
+        <label>Title:</label>
+        <input
+          name="title"
+          value={form.title}
+          onChange={handleChange}
+          required
+          type="text"
+        />
 
-        <label>
-          Description:
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={handleChange}
-            style={{ width: "100%" }}
-          />
-        </label>
-        <br />
+        <label>Description:</label>
+        <textarea
+          name="description"
+          value={form.description}
+          onChange={handleChange}
+        />
 
-        <label>
-          Status:
-          <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            required
-            style={{ width: "100%" }}
-          >
-            <option value="">Select</option>
-            <option value="Lost">Lost</option>
-            <option value="Found">Found</option>
-          </select>
-        </label>
-        <br />
+        <label>Status:</label>
+        <select
+          name="status"
+          value={form.status}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Select</option>
+          <option value="lost">Lost</option>
+          <option value="found">Found</option>
+        </select>
 
-        <label>
-          Location:
-          <input
-            name="location"
-            value={form.location}
-            onChange={handleChange}
-            style={{ width: "100%" }}
-          />
-        </label>
-        <br />
+        <label>Location:</label>
+        <input
+          name="location"
+          value={form.location}
+          onChange={handleChange}
+          type="text"
+        />
 
-        <label>
-          Date Found:
-          <input
-            type="date"
-            name="date_found"
-            value={form.date_found}
-            onChange={handleChange}
-            style={{ width: "100%" }}
-          />
-        </label>
-        <br />
+        <label>Date Found:</label>
+        <input
+          type="date"
+          name="date_found"
+          value={form.date_found}
+          onChange={handleChange}
+          max={new Date().toISOString().split("T")[0]}
+        />
 
-        <label>
-          Category:
-          <input
-            name="category"
-            value={form.category}
-            onChange={handleChange}
-            style={{ width: "100%" }}
-          />
-        </label>
-        <br />
+        <label>Category:</label>
+        <input
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          type="text"
+        />
 
-        <label>
-          Image:
-          <br />
-          {item.image_url && (
+        <label>Image:</label>
+        {item.image_url && (
+          <div className="map-preview">
             <img
-              src={item.image_url}
+              src={`http://localhost:3000${item.image_url}`}
               alt="Item"
-              style={{ maxWidth: "200px", marginBottom: "10px" }}
             />
-          )}
-          <input type="file" name="image" accept="image/*" onChange={handleChange} />
-        </label>
-        <br />
+          </div>
+        )}
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={handleChange}
+          className="file-upload"
+        />
+
+        <div className="toggle-section">
+          <label className="switch">
+            <input
+              type="checkbox"
+              name="share_contact"
+              checked={form.share_contact}
+              onChange={handleChange}
+            />
+            <span className="slider"></span>
+          </label>
+          <p className="toggle-description">Share contact with finder</p>
+        </div>
 
         {isOwner ? (
           <>
-            <button type="submit">Update</button>
+            <button type="submit" className="submit-btn">
+              Update
+            </button>
             <button
               type="button"
               onClick={handleDelete}
-              style={{ marginLeft: "10px", backgroundColor: "red", color: "white" }}
+              className="submit-btn"
+              style={{ backgroundColor: "#e53935" }}
             >
               Delete
             </button>
           </>
         ) : (
-          <p>You cannot edit or delete this item.</p>
+          <p>You do not have permission to modify this item.</p>
         )}
       </form>
-
-      {successMsg && <p style={{ color: "green" }}>{successMsg}</p>}
     </div>
   );
 };

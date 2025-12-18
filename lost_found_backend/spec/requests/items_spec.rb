@@ -81,7 +81,7 @@ RSpec.describe "ItemsController", type: :request do
   end
 
   describe "PATCH /items/:id" do
-    it "updates the item if user is owner" do
+    it "updates the item if user is owner" do                        tju
       patch "/items/#{item.id}", headers: auth_headers, params: {
         item: { title: "Updated Wallet" }
       }

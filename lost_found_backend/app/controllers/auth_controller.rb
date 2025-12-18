@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  # Skip auth check for login
+ 
   skip_before_action :authorize_request, only: [:login]
 
   def login

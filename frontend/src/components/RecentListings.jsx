@@ -1,3 +1,4 @@
+// src/components/RecentListings.jsx
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ListingCard from "./ListingCard";
@@ -5,25 +6,25 @@ import "../App.css";
 
 const staticListings = [
   {
-    id: "static1",
+    id: "1",
     image: "Backpack.jpg",
     title: "Lost: Backpack",
     description: "Black backpack with books",
   },
   {
-    id: "static2",
+    id: "2",
     image: "waterbottle.jpg",
     title: "Found: Water Bottle",
     description: "Blue water bottle near the library",
   },
   {
-    id: "static3",
+    id: "3",
     image: "laptop.jpg",
     title: "Lost: Laptop",
     description: "Silver laptop in a black case",
   },
   {
-    id: "static4",
+    id: "4",
     image: "keys.jpg",
     title: "Found: Keys",
     description: "Set of keys with a keychain",
@@ -43,73 +44,69 @@ const RecentListing = () => {
         },
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch items from backend");
-      }
+      if (!response.ok) throw new Error("Failed to fetch items");
 
       const data = await response.json();
 
       const backendListings = data.map((item) => ({
-        id: item.id, // keep raw ID to use in URL
+        id: `backend-${item.id}`,
+        linkId: item.id,
         image: item.image_url || "placeholder.jpg",
         title: `${item.status === "lost" ? "Lost" : "Found"}: ${item.title}`,
         description: item.description,
         isStatic: false,
       }));
 
-      const allListings = [...backendListings, ...staticListings.map((item) => ({
+      const staticListingsWithPrefix = staticListings.map((item) => ({
         ...item,
+        id: `static-${item.id}`,
         isStatic: true,
-      }))];
+      }));
 
-      setListings(allListings);
+      setListings([...backendListings, ...staticListingsWithPrefix]);
       setError("");
     } catch (err) {
       console.error("Error fetching listings:", err);
       setError("Could not load latest listings. Showing offline items.");
-      setListings(staticListings.map(item => ({ ...item, isStatic: true })));
+
+      setListings(staticListings.map(item => ({
+        ...item,
+        id: `static-${item.id}`,
+        isStatic: true,
+      })));
     }
   };
 
   useEffect(() => {
-    fetchListings(); // Initial fetch on mount
-
-    const interval = setInterval(() => {
-      fetchListings(); // Fetch every 10 seconds
-    }, 10000);
-
-    return () => clearInterval(interval); // Cleanup on unmount
+    fetchListings();
+    const interval = setInterval(fetchListings, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <section className="recent" id="recent">
       <h2>Recent Listings</h2>
       {error && <p className="error">{error}</p>}
-
       <div className="cards">
-        {listings.length > 0 ? (
-          listings.map((item) => (
-            <div key={item.id} className="listing-with-actions">
-              {item.isStatic ? (
+        {listings.map((item) => (
+          <div key={item.id} className="listing-with-actions">
+            {item.isStatic ? (
+              <ListingCard
+                image={item.image}
+                title={item.title}
+                description={item.description}
+              />
+            ) : (
+              <Link to={`/items/${item.linkId}`} style={{ textDecoration: "none", color: "inherit" }}>
                 <ListingCard
                   image={item.image}
                   title={item.title}
                   description={item.description}
                 />
-              ) : (
-                <Link to={`/items/${item.id}`} style={{ textDecoration: "none", color: "inherit" }}>
-                  <ListingCard
-                    image={item.image}
-                    title={item.title}
-                    description={item.description}
-                  />
-                </Link>
-              )}
-            </div>
-          ))
-        ) : (
-          <p>No listings found.</p>
-        )}
+              </Link>
+            )}
+          </div>
+        ))}
       </div>
 
       <div className="center-button">
